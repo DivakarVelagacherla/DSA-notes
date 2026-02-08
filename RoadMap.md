@@ -19,7 +19,7 @@
 ### ✅ Week 1: Arrays + Two Pointer (Feb 2-8)
 
 - **Status:** Complete
-- **Topic:** [Arrays and Two Pointer](/Arrays%20+%20Two%20Pointer.md)
+- **Topic:** <page url="https://www.notion.so/2fdae59f84cd8111b628d8d553438024">Arrays and Two Pointer</page>
 - **Problems:** 11 (3 Easy, 6 Medium, 2 Hard)
 - **Patterns:** Opposite ends, Same direction, Three pointers
 

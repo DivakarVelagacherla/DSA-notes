@@ -1015,11 +1015,3 @@ public List<List<Integer>> fourSum(int[] arr, int target) {
 - #42 - Trapping Rain Water
 
 **Total: 11 problems, 3 patterns mastered**
-
----
-
----
-
----
-
----
