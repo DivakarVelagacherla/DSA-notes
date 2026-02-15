@@ -8,13 +8,11 @@
 
 ## 📊 Progress Overview
 
-**Current Week:** Week 2 (Sliding Window)
+**Current Week:** Week 3 (Prefix Sum + Kadane's)
 
-**Weeks Completed:** 1/34
+**Weeks Completed:** 2/34
 
-**Problems Solved:** 19
-
-**Patterns Mastered:** Sliding Window (in progress)
+**Current Day:** Day 2
 
 ---
 
@@ -28,17 +26,17 @@
 
 **Status:** Complete
 
-### 🔄 Week 2: Sliding Window
+### ✅ Week 2: Sliding Window
 
 **Topics:** Fixed window, Dynamic window, HashMap + Window
 
-**Status:** In Progress
+**Status:** Complete
 
-### 📅 Week 3: Prefix Sum + Kadane's
+### 🔄 Week 3: Prefix Sum + Kadane's
 
 **Topics:** Prefix sums, Kadane's algorithm, Subarray patterns
 
-**Status:** Not Started
+**Status:** In Progress (Day 2)
 
 ### 📅 Week 4: DNF + Moore's + Pattern Drill
 
