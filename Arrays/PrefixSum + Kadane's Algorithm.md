@@ -195,7 +195,9 @@ public int subarraySum(int[] nums, int k) {
 
 **Medium:**
 
+- Contiguous Array (#525)
 - Subarray Sum Equals K (#560)
+- Binary Subarrays With Sum (#930)
 
 ---
 
@@ -236,3 +238,202 @@ public int subarraySum(int[] nums, int k) {
 **Day 4-6:** Kadane's Algorithm (Maximum Subarray)
 
 **Day 7:** Week recap and pattern reinforcement
+
+---
+
+## 📅 Day 2: Prefix Sum + HashMap Pattern
+
+### 🎯 Core Concept Learned
+
+**Prefix Sum + HashMap for Subarray Counting**
+
+When you need to count subarrays (not find max length), use HashMap to store frequencies:
+
+- **Key:** Prefix sum value
+- **Value:** How many times we've seen that prefix sum
+
+### 💡 The Key Insight
+
+For finding subarrays with sum = K:
+
+```
+If prefix[j] - prefix[i] = k
+Then: prefix[i] = prefix[j] - k
+```
+
+**Translation:** At position j, if we've seen prefix sum of `(currentSum - k)` before, there's a subarray ending at j that sums to k!
+
+### 🔑 Why Initialize HashMap with {0: 1}?
+
+**The `{0: 1}` represents the empty prefix** - the state before we've seen any elements.
+
+This handles subarrays that start from index 0.
+
+**Example:** `nums = [1, 2, 3], k = 3`
+
+- At index 0: sum = 1, check for (1-3) = -2 (not found)
+- At index 1: sum = 3, check for (3-3) = **0** (✅ found! count++)
+
+Without `{0: 1}`, we'd miss subarrays starting from index 0.
+
+### 🛠️ Problems Solved Today
+
+#### 1. LeetCode #525 - Contiguous Array
+
+**Problem:** Find max length subarray with equal 0s and 1s.
+
+**Key Trick:** Convert 0s to -1, 1s to +1
+
+- Equal 0s and 1s → sum = 0
+- Use HashMap to store {prefix_sum: first_index_seen}
+- When same prefix_sum appears again → subarray between has sum = 0
+
+**Code Pattern:**
+
+```java
+Map<Integer, Integer> map = new HashMap<>();
+map.put(0, -1);  // Initialize for full array case
+int sum = 0, maxLen = 0;
+
+for (int i = 0; i < nums.length; i++) {
+    sum += (nums[i] == 0 ? -1 : 1);  // Convert on the fly
+    
+    if (map.containsKey(sum)) {
+        maxLen = Math.max(maxLen, i - map.get(sum));
+    } else {
+        map.put(sum, i);  // Store FIRST occurrence
+    }
+}
+```
+
+**Complexity:**
+
+- Time: O(n)
+- Space: O(n)
+
+---
+
+#### 2. LeetCode #560 - Subarray Sum Equals K
+
+**Problem:** Count subarrays with sum = k.
+
+**Key Difference from #525:**
+
+- Not looking for max length → store **frequencies**, not indices
+- Check BEFORE updating map (avoid counting same element twice)
+
+**Code Pattern:**
+
+```java
+Map<Integer, Integer> freqMap = new HashMap<>();
+freqMap.put(0, 1);  // Initialize
+int sum = 0, count = 0;
+
+for (int num : nums) {
+    sum += num;
+    
+    int required = sum - k;
+    if (freqMap.containsKey(required)) {
+        count += freqMap.get(required);  // Add frequency!
+    }
+    
+    freqMap.put(sum, freqMap.getOrDefault(sum, 0) + 1);
+}
+```
+
+**Why add frequency?** Multiple prefix sums could equal `required`, each represents a valid subarray.
+
+**Complexity:**
+
+- Time: O(n)
+- Space: O(n)
+
+---
+
+#### 3. LeetCode #930 - Binary Subarrays With Sum
+
+**Problem:** Count subarrays with sum = goal (binary array).
+
+**Pattern Recognition:** Exactly the same as #560!
+
+- Same HashMap approach
+- Same initialization with {0: 1}
+- Same logic: check for (sum - goal)
+
+**Code:** Identical structure to #560, just different variable names.
+
+**Complexity:**
+
+- Time: O(n)
+- Space: O(n)
+
+---
+
+### 🧠 Pattern Recognition
+
+**When to use Prefix Sum + HashMap:**
+
+✅ **Use when:**
+
+- Array has negative numbers (sum unpredictable)
+- Need to count subarrays with **exact** sum
+- "How many subarrays with sum = k?"
+- Can't use sliding window (negatives break monotonicity)
+
+❌ **Don't use when:**
+
+- All positive numbers + "at most k" → use sliding window
+- Looking for max/min length with predictable sums → two pointer
+- Single query → just iterate
+
+---
+
+### 📊 Two HashMap Patterns Compared
+
+| **Aspect** | **Max Length Pattern (#525)** | **Count Pattern (#560, #930)** |
+| --- | --- | --- |
+| **Goal** | Find longest subarray | Count all subarrays |
+| **HashMap Value** | Index (first occurrence) | Frequency (count) |
+| **Initialization** | `{0: -1}` | `{0: 1}` |
+| **When found** | Calculate length | Add frequency to count |
+| **Update map** | Only if not present | Always (increment frequency) |
+
+---
+
+### ✅ Key Takeaways from Day 2
+
+1. **Prefix Sum + HashMap has TWO variants:**
+    - Max length → store indices
+    - Count subarrays → store frequencies
+2. **Always initialize with {0: ...}:**
+    - {0: -1} for max length (handles full array)
+    - {0: 1} for counting (handles subarrays from index 0)
+3. **The formula is always: `required = currentSum - target`**
+4. **For counting problems:**
+    - Check map BEFORE updating (avoid self-matching)
+    - Add frequency, not just count++ (handles duplicates)
+5. **Pattern recognition trigger:**
+    - "Count subarrays with sum = k" → Prefix Sum + HashMap (frequency)
+    - "Max length with sum = 0/equal" → Prefix Sum + HashMap (index)
+
+---
+
+### 🔥 Common Mistake Avoided
+
+**Mistake:** Trying to use sliding window for problems with negative numbers.
+
+**Why it fails:** With negatives, adding elements doesn't guarantee sum increases, and removing doesn't guarantee sum decreases. Window behavior becomes unpredictable.
+
+**Solution:** Use Prefix Sum + HashMap instead - handles negatives perfectly.
+
+---
+
+### 🚀 Progress Check
+
+**Week 3 Progress:**
+
+- ✅ Day 1: Prefix sum basics (range queries)
+- ✅ Day 2: Prefix sum + HashMap (subarray counting)
+- 📅 Day 3: Kadane's Algorithm (coming next)
+
+**Total Problems Solved This Week:** 6
